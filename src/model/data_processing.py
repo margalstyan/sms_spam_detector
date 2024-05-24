@@ -1,14 +1,30 @@
 import pandas as pd
 import re
 
-
 def load_data(filepath):
+    """
+    Loads data from a CSV file, extracts specific columns, and returns a DataFrame.
+
+    Parameters:
+    filepath (str): The path to the CSV file.
+
+    Returns:
+    DataFrame: A pandas DataFrame containing the specified columns.
+    """
     df = pd.read_csv(filepath, encoding='cp1252')
     df = df[['v1', 'v2']]
     return df
 
-
 def extract_words(input_string):
+    """
+    Extracts words, symbols, and numbers from an input string and counts their occurrences.
+
+    Parameters:
+    input_string (str): The string to extract words, symbols, and numbers from.
+
+    Returns:
+    dict: A dictionary with words, symbols, and numbers as keys and their counts as values.
+    """
     characters_dict = {}
 
     input_string = input_string.replace("'", "")
@@ -29,8 +45,16 @@ def extract_words(input_string):
 
     return characters_dict
 
-
 def prepare_data(x):
+    """
+    Prepares data by extracting words, symbols, and numbers from each string in the input list.
+
+    Parameters:
+    x (list of str): A list of strings to process.
+
+    Returns:
+    list of dict: A list of dictionaries, each containing words, symbols, and numbers as keys and their counts as values.
+    """
     new_x = []
     for data in x:
         new_x.append(extract_words(data))
