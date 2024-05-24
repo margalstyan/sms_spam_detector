@@ -1,11 +1,7 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+from models import Message
 
 app = FastAPI()
-
-
-class Message(BaseModel):
-    text: str
 
 
 @app.get("/info")
@@ -22,4 +18,5 @@ async def predict(message: Message):
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="127.0.0.1", port=8000)
