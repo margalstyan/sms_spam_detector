@@ -8,6 +8,16 @@ routes_to_reroute = ['/']
 
 @app.middleware('http')
 async def middleware(request: Request, call_next):
+    """
+    Middleware to reroute the root path to the /docs path.
+
+    Args:
+        request (Request): request object.
+        call_next: next middleware function.
+
+    Returns:
+        response: response object.
+    """
     if request.url.path in routes_to_reroute:
         request.scope['path'] = '/docs'
 
