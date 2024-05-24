@@ -1,11 +1,20 @@
-from fastapi import FastAPI, HTTPException
-from models import Message
+from fastapi import FastAPI, HTTPException, Request
+from .models import Message
 from src.model.main import nb
 
 app = FastAPI()
+routes_to_reroute = ['/']
 
 
-@app.get("/info")
+@app.middleware('http')
+async def middleware(request: Request, call_next):
+    if request.url.path in routes_to_reroute:
+        request.scope['path'] = '/docs'
+
+    return await call_next(request)
+
+
+@app.get("/info", tags=["Model Information"])
 async def info():
     """
     **Information about the algorithm.**
@@ -20,7 +29,7 @@ async def info():
             "error": ""}
 
 
-@app.post("/predict")
+@app.post("/predict", tags=["Prediction"])
 async def predict(message: Message):
     """
     **Predicts whether a message is spam or ham.**
@@ -28,8 +37,8 @@ async def predict(message: Message):
     * **Parameter:** message to classify.
     * **Returns:** prediction.
     """
-    if message.text:
-        prediction = nb.predict([message.text])
+    if message.message:
+        prediction = nb.predict([message.message])
         if prediction[0] == 0:
             return {"prediction": "ham"}
         return {"prediction": "spam"}
