@@ -19,14 +19,14 @@ async def info():
     """
     **Information about the algorithm.**
 
-    * **Returns:** algorithm name, version, status, status code, message, and error.
+    * **Returns:** algorithm name, related research papers, version, training data source.
     """
     return {"algorithm_name": "Naive Bayes",
+            "related_research_papers": [
+                "https://www.researchgate.net/publication/228845263_An_Empirical_Study_of_the_Naive_Bayes_Classifier"],
             "version": "0.0.1",
-            "status": "up",
-            "status_code": 200,
-            "message": "OK",
-            "error": ""}
+            "training_data": "https://www.kaggle.com/datasets/uciml/sms-spam-collection-dataset"
+            }
 
 
 @app.post("/predict", tags=["Prediction"])
