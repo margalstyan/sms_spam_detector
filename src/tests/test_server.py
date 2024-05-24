@@ -33,3 +33,8 @@ def test_predict_endpoint(client, message, expected_status_code, expected_predic
         assert response.json()["prediction"] == expected_prediction
     else:
         assert response.json()["detail"] == expected_prediction
+
+
+def test_middleware(client):
+    response = client.get("/")
+    assert "swagger-ui" in str(response.content)
