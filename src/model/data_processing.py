@@ -1,6 +1,7 @@
 import pandas as pd
 import re
 
+
 def load_data(filepath):
     """
     Loads data from a CSV file, extracts specific columns, and returns a DataFrame.
@@ -14,6 +15,7 @@ def load_data(filepath):
     df = pd.read_csv(filepath, encoding='cp1252')
     df = df[['v1', 'v2']]
     return df
+
 
 def extract_words(input_string):
     """
@@ -44,6 +46,7 @@ def extract_words(input_string):
         characters_dict[number] = characters_dict.get(number, 0) + 1
 
     return characters_dict
+
 
 def prepare_data(x):
     """

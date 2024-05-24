@@ -1,5 +1,7 @@
+import pandas as pd
 from sklearn.metrics import f1_score
 from src.model.data_processing import prepare_data
+
 
 class NaiveBayes:
     """
@@ -87,6 +89,8 @@ class NaiveBayes:
         Returns:
         float: The F1 score of the classifier.
         """
+        if isinstance(y_test, list | tuple):
+            y_test = pd.array(y_test)
         preds = self.predict(X_test)
         y = y_test
         y = y.map(lambda x: 0 if x == "ham" else 1)
