@@ -23,4 +23,4 @@ This project implements a spam classifier using a Naive Bayes model. The classif
 ## Running Tests
 To run the tests, use the following command:
 ```bash
-pytest tests/
+pytest src/tests/
