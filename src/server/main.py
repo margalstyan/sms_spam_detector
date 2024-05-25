@@ -47,8 +47,9 @@ async def predict(message: Message):
     * **Parameter:** message to classify.
     * **Returns:** prediction.
     """
-    if message.message:
-        prediction = nb.predict([message.message])
+    message = message.message.strip()
+    if message:
+        prediction = nb.predict([message])
         if prediction[0] == 0:
             return {"prediction": "ham"}
         return {"prediction": "spam"}

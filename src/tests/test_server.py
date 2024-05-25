@@ -25,6 +25,7 @@ def test_info_endpoint(client, url, status_code, response_keys):
     ("Click on link below to earn $5000", 200, "spam"),
     ("Hello, how are you?", 200, "ham"),
     ("", 400, "Message should not be empty"),
+    ("   ", 400, "Message should not be empty"),
 ])
 def test_predict_endpoint(client, message, expected_status_code, expected_prediction):
     response = client.post("/predict", json={"message": message})
