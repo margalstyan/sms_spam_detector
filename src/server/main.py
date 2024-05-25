@@ -1,6 +1,6 @@
 from fastapi import FastAPI, HTTPException, Request
 from .models import Message, Messages
-from src.model.main import nb
+from src.model.main import nb, X_test, y_test
 
 app = FastAPI()
 routes_to_reroute = ['/']
@@ -32,10 +32,11 @@ async def info():
     * **Returns:** algorithm name, related research papers, version, training data source.
     """
     return {"algorithm_name": "Naive Bayes",
+            "model_score": round(nb.score(X_test, y_test), 3),
             "related_research_papers": [
                 "https://www.researchgate.net/publication/228845263_An_Empirical_Study_of_the_Naive_Bayes_Classifier"],
             "version": "0.0.1",
-            "training_data": "https://www.kaggle.com/datasets/uciml/sms-spam-collection-dataset"
+            "training_data": "https://www.kaggle.com/datasets/uciml/sms-spam-collection-dataset",
             }
 
 

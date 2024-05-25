@@ -11,7 +11,7 @@ def client():
 
 # Parametrized test cases for the /info endpoint
 @pytest.mark.parametrize("url, status_code, response_keys", [
-    ("/info", 200, ["algorithm_name", "related_research_papers", "version", "training_data"]),
+    ("/info", 200, ["algorithm_name", "model_score", "related_research_papers", "version", "training_data"]),
 ])
 def test_info_endpoint(client, url, status_code, response_keys):
     response = client.get(url)
