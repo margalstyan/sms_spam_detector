@@ -1,5 +1,5 @@
 from fastapi import FastAPI, HTTPException, Request
-from .models import Message
+from .models import Message, Messages
 from src.model.main import nb
 
 app = FastAPI()
@@ -45,6 +45,7 @@ async def predict(message: Message):
     **Predicts whether a message is spam or ham.**
 
     * **Parameter:** message to classify.
+
     * **Returns:** prediction.
     """
     message = message.message.strip()
@@ -55,6 +56,30 @@ async def predict(message: Message):
         return {"prediction": "spam"}
 
     raise HTTPException(status_code=400, detail="Message should not be empty")
+
+
+@app.post("/predict_all", tags=["Prediction"])
+async def predict_all(messages: Messages, ignore_empty: bool = False):
+    """
+    **Predicts whether a list of messages are spam or ham.**
+
+    * **Parameter:** list of messages to classify.
+
+    * **Returns:** list of predictions.
+
+    * **Optional Parameter:** ignore_empty (default: False) - whether to ignore empty message(s).
+    """
+    message_list = [message.strip() for message in messages.messages if message.strip()]
+    if message_list and not any(message.strip() == "" for message in messages.messages) or ignore_empty:
+        predictions = nb.predict(message_list)
+        for i in range(len(predictions)):
+            if predictions[i] == 0:
+                predictions[i] = "ham"
+            else:
+                predictions[i] = "spam"
+        return {"predictions": predictions}
+
+    raise HTTPException(status_code=400, detail="Message(s) should not be empty")
 
 
 if __name__ == "__main__":

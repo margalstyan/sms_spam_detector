@@ -36,6 +36,20 @@ def test_predict_endpoint(client, message, expected_status_code, expected_predic
         assert response.json()["detail"] == expected_prediction
 
 
+@pytest.mark.parametrize("message, expected_status_code, expected_prediction, ignore_empty", [
+    (["Click on link below to earn $5000", "Hello, how are you?"], 200, ["spam", "ham"], True),
+    (["", "  "], 400, "Message(s) should not be empty", False),
+    (["", "Hi there"], 200, ["ham"], True),
+])
+def test_predict_all_endpoint(client, message, expected_status_code, expected_prediction, ignore_empty):
+    response = client.post("/predict_all", json={"messages": message}, params={"ignore_empty": ignore_empty})
+    assert response.status_code == expected_status_code
+    if response.status_code == 200:
+        assert response.json()["predictions"] == expected_prediction
+    else:
+        assert response.json()["detail"] == expected_prediction
+
+
 def test_middleware(client):
     response = client.get("/")
     assert "swagger-ui" in str(response.content)
