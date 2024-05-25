@@ -10,6 +10,7 @@ def client():
 
 
 # Parametrized test cases for the /info endpoint
+@pytest.mark.server
 @pytest.mark.parametrize("url, status_code, response_keys", [
     ("/info", 200, ["algorithm_name", "model_score", "related_research_papers", "version", "training_data"]),
 ])
@@ -21,12 +22,14 @@ def test_info_endpoint(client, url, status_code, response_keys):
 
 
 # Parametrized test cases for the /predict endpoint
+@pytest.mark.server
 @pytest.mark.parametrize("message, expected_status_code, expected_prediction", [
     ("Click on link below to earn $5000", 200, "spam"),
     ("Hello, how are you?", 200, "ham"),
     ("", 400, "Message should not be empty"),
     ("   ", 400, "Message should not be empty"),
 ])
+@pytest.mark.server
 def test_predict_endpoint(client, message, expected_status_code, expected_prediction):
     response = client.post("/predict", json={"message": message})
     assert response.status_code == expected_status_code
@@ -41,6 +44,7 @@ def test_predict_endpoint(client, message, expected_status_code, expected_predic
     (["", "  "], 400, "Message(s) should not be empty", False),
     (["", "Hi there"], 200, ["ham"], True),
 ])
+@pytest.mark.server
 def test_predict_all_endpoint(client, message, expected_status_code, expected_prediction, ignore_empty):
     response = client.post("/predict_all", json={"messages": message}, params={"ignore_empty": ignore_empty})
     assert response.status_code == expected_status_code
@@ -50,6 +54,7 @@ def test_predict_all_endpoint(client, message, expected_status_code, expected_pr
         assert response.json()["detail"] == expected_prediction
 
 
+@pytest.mark.server
 def test_middleware(client):
     response = client.get("/")
     assert "swagger-ui" in str(response.content)

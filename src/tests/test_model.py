@@ -24,6 +24,7 @@ def prepared_data():
             {'!': 1, ',': 1, 'act': 1, 'deal': 1, 'exclusive': 1, 'for': 1, 'just': 1, 'now': 1, 'you': 1}]
 
 
+@pytest.mark.model
 def test_prediction(data):
     messages, predictions = data
     model_predict = nb.predict(messages)
@@ -31,6 +32,7 @@ def test_prediction(data):
     assert model_predict == predictions
 
 
+@pytest.mark.model
 def test_score(data):
     messages, predictions = data
     score = nb.score(messages, predictions)
@@ -38,6 +40,7 @@ def test_score(data):
     assert 0 <= score <= 1
 
 
+@pytest.mark.model
 def test_extract_words():
     # Simple test
     result = extract_words("Hi, this is a test! 123")
@@ -50,6 +53,7 @@ def test_extract_words():
     assert result == expected
 
 
+@pytest.mark.model
 def test_load_data():
     ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
     df = load_data(f'{ROOT_DIR}/../model/train_data/spam.csv')
@@ -60,6 +64,7 @@ def test_load_data():
     assert len(df.columns) == 2
 
 
+@pytest.mark.model
 def test_prepare_data(data, prepared_data):
     messages, predictions = data
     print(prepare_data(messages))

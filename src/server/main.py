@@ -29,7 +29,7 @@ async def info():
     """
     **Information about the algorithm.**
 
-    * **Returns:** algorithm name, related research papers, version, training data source.
+    * **Returns:** algorithm name, model score, related research papers, version, training data source.
     """
     return {"algorithm_name": "Naive Bayes",
             "model_score": round(nb.score(X_test, y_test), 3),
